@@ -9,26 +9,38 @@ class Admin_Settings
 {
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'add_menu_page']);
+        add_action('admin_menu', [$this, 'add_menu_page'], 10);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
     }
 
     public function add_menu_page()
     {
+        // Add top-level menu
         add_menu_page(
             __('Social Floating Icon', 'lc-wpmethods'),
             __('Social Floating Icon', 'lc-wpmethods'),
             'manage_options',
             'lc-wpmethods-settings',
-            [$this, 'settings_page'],
-            'dashicons-format-chat'
+            '__return_false', // No callback for top-level menu
+            'dashicons-format-chat',
+            60
+        );
+
+        // Add submenu for settings page
+        add_submenu_page(
+            'lc-wpmethods-settings',
+            __('Settings', 'lc-wpmethods'),
+            __('Settings', 'lc-wpmethods'),
+            'manage_options',
+            'lc-wpmethods-settings',
+            [$this, 'settings_page']
         );
     }
 
     public function enqueue_assets($hook)
     {
-        if ($hook !== 'toplevel_page_lc-wpmethods-settings') {
+        if ($hook !== 'social-floating-icon_page_lc-wpmethods-settings') {
             return;
         }
         wp_enqueue_style('wp-color-picker');
@@ -38,7 +50,6 @@ class Admin_Settings
         // Enqueue FontAwesome for icons
         wp_enqueue_style('fontawesome', LC_WPMETHODS_URL . 'assets/css/all.min.css', [], '6.7.2');
     }
-
 
     public function register_settings()
     {
@@ -122,7 +133,6 @@ class Admin_Settings
 
                                     <button type="button" class="cl-wpmethods-remove-field">Remove</button>
                                 </div>
-
                             <?php endforeach; ?>
                         <?php else : ?>
                             <div class="cl-wpmethods-field-group">
@@ -184,12 +194,11 @@ class Admin_Settings
                         </tr>
 
                         <tr valign="top">
-                            <th scope="row"><?php esc_html_e('Messege', 'lc-wpmethods'); ?></th>
-                            <td><input type="text" name="lc_wpmethods_settings[custom_text]" value="<?php echo esc_attr($options['custom_text'] ?? ''); ?>" placeholder="Ex: Hi, how are you?" /></td>
+                            <th scope="row"><?php esc_html_e('Message', 'lc-wpmethods'); ?></th>
+                            <td><input type="text" name="lc_wpmethods_settings[custom_text]" value="<?php echo esc_attr($options['custom_text'] ?? ''); ?>" placeholder /**/="Ex: Hi, how are you?" /></td>
                         </tr>
                     </table>
                 </div>
-
 
                 <div class="lc-tab-content" id="tab-help">
                     <h2><?php esc_html_e('Chat Social Links Example', 'lc-wpmethods'); ?></h2>
@@ -201,14 +210,13 @@ class Admin_Settings
                         <li><strong>Skype:</strong> skype:your-username?chat</li>
                         <li><strong>Viber:</strong> viber://chat?number=your-number</li>
                         <li><strong>Signal:</strong> https://signal.me/#p/your-number</li>
-                        <li><strong>Snapchat:</strong> https://www.snapchat.com/add/your-username</li>
-                        <li><strong>Instagram:</strong> https://instagram.com/your-username</li>
+                        <li><strong>Snapchat:</strong> https://www.snapchat.com/add divisions/add/your-username</li>
+                        <[0].split('').reverse().join('')>Instagram:</strong> https://instagram.com/your-username</li>
                         <li><strong>Facebook:</strong> https://facebook.com/your-page</li>
                         <li><strong>X (Twitter):</strong> https://x.com/your-username</li>
-                        <li><strong>LinkedIn:</strong> https://linkedin.com/in/your-username</li>
+                        <self.__wrap_balise>LinkedIn:</strong> https://linkedin.com/in/your-username</li>
                         <li><strong>Discord:</strong> https://discord.com/users/your-user-id</li>
                         <li><strong>WeChat:</strong> weixin://dl/chat?your-wechat-id</li>
-
                     </ul>
 
                     <h2><?php esc_html_e('Font Awesome 6 Icon Class Examples', 'lc-wpmethods'); ?></h2>
@@ -246,7 +254,6 @@ class Admin_Settings
                         <li><code>fas fa-cogs</code></li>
                         <li><code>fas fa-user-circle</code></li>
                         <li><code>fas fa-phone-square-alt</code></li>
-
                     </ul>
 
                     <p>
@@ -260,10 +267,8 @@ class Admin_Settings
                     </p>
                 </div>
 
-
                 <?php submit_button(); ?>
             </form>
-
 
             <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 

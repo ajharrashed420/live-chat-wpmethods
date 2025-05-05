@@ -25,6 +25,7 @@ require_once LC_WPMETHODS_PATH . 'vendor/autoload.php';
 add_action('plugins_loaded', function() {
     if (is_admin()) {
         new LC_WPMethods\Admin_Settings();
+        new LC_WPMethods\WP_Methods_Live_Chat_License();
     } else {
         new LC_WPMethods\Front_End();
     }
